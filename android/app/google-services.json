@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "229772085831",
+    "project_id": "review-rest",
+    "storage_bucket": "review-rest.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:229772085831:android:fe488bd0711b8f3229ff62",
+        "android_client_info": {
+          "package_name": "com.example.review_rest_firebase"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaA5OlvJIP0wFUkk4KziHQMh7yuLdFcgU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
