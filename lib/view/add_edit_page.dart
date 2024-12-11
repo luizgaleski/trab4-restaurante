@@ -1,6 +1,4 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import '../service/firestore_service.dart';
 
@@ -23,7 +21,6 @@ class _AddEditPageState extends State<AddEditPage> {
   final FirestoreService _firestoreService = FirestoreService();
 
   String? _selectedCategory;
-  String? _imagePath;
   String? _selectedDate;
 
   final List<String> _categories = [
@@ -43,28 +40,10 @@ class _AddEditPageState extends State<AddEditPage> {
       _orderController.text = widget.restaurant!['pedido'] ?? '';
       _commentController.text = widget.restaurant!['comentario'] ?? '';
       _selectedCategory = widget.restaurant!['tipoComida'];
-      _imagePath = widget.restaurant!['imagem'];
       _selectedDate = widget.restaurant!['dataVisita'] != null
           ? DateFormat('dd/MM/yyyy').format(widget.restaurant!['dataVisita'].toDate())
           : null;
     }
-  }
-
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        _imagePath = pickedFile.path;
-      });
-    }
-  }
-
-  void _removeImage() {
-    setState(() {
-      _imagePath = null;
-    });
   }
 
   Future<void> _pickDate() async {
@@ -75,6 +54,23 @@ class _AddEditPageState extends State<AddEditPage> {
           : DateTime.now(),
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
+      builder: (context, child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: const ColorScheme.light(
+              primary: Colors.red,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                foregroundColor: Colors.red,
+              ),
+            ),
+          ),
+          child: child!,
+        );
+      },
     );
 
     if (pickedDate != null) {
@@ -89,7 +85,6 @@ class _AddEditPageState extends State<AddEditPage> {
       final restaurantData = {
         'nome': _nameController.text,
         'nota': double.tryParse(_ratingController.text) ?? 0.0,
-        'imagem': _imagePath ?? '',
         'tipoComida': _selectedCategory ?? '',
         'dataVisita': _selectedDate != null
             ? DateFormat('dd/MM/yyyy').parse(_selectedDate!)
@@ -100,18 +95,16 @@ class _AddEditPageState extends State<AddEditPage> {
 
       try {
         if (widget.restaurant == null) {
-          // Adicionar novo restaurante
           await _firestoreService.createRestaurant(
             nome: restaurantData['nome'] as String,
             nota: restaurantData['nota'] as double,
-            imagem: restaurantData['imagem'] as String,
+            imagem: '', // Definindo imagem vazia
             tipoComida: restaurantData['tipoComida'] as String,
             dataVisita: restaurantData['dataVisita'] as DateTime,
             pedido: restaurantData['pedido'] as String,
             comentario: restaurantData['comentario'] as String,
           );
         } else {
-          // Atualizar restaurante existente
           await _firestoreService.updateRestaurant(
             docID: widget.restaurant!['id'],
             updatedData: restaurantData,
@@ -134,9 +127,16 @@ class _AddEditPageState extends State<AddEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.restaurant == null
-            ? 'Adicionar Restaurante'
-            : 'Editar Restaurante'),
+        backgroundColor: Colors.red,
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: Text(
+          widget.restaurant == null ? 'Adicionar Restaurante' : 'Editar Restaurante',
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        elevation: 2,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -147,14 +147,32 @@ class _AddEditPageState extends State<AddEditPage> {
               children: [
                 TextFormField(
                   controller: _nameController,
-                  decoration: const InputDecoration(labelText: 'Nome'),
+                  decoration: const InputDecoration(
+                    labelText: 'Nome',
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
                   validator: (value) =>
                       value!.isEmpty ? 'Este campo é obrigatório' : null,
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _ratingController,
-                  decoration: const InputDecoration(labelText: 'Nota (0 a 5)'),
+                  decoration: const InputDecoration(
+                    labelText: 'Nota (0 a 5)',
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
                   keyboardType: TextInputType.number,
                   validator: (value) {
                     final rating = double.tryParse(value!);
@@ -166,7 +184,16 @@ class _AddEditPageState extends State<AddEditPage> {
                 ),
                 const SizedBox(height: 20),
                 DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(labelText: 'Tipo de Restaurante'),
+                  decoration: const InputDecoration(
+                    labelText: 'Tipo de Restaurante',
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
                   value: _selectedCategory,
                   items: _categories
                       .map((category) => DropdownMenuItem(
@@ -190,63 +217,65 @@ class _AddEditPageState extends State<AddEditPage> {
                       decoration: const InputDecoration(
                         labelText: 'Data de Visita',
                         hintText: 'Selecione a data',
+                        labelStyle: TextStyle(color: Colors.black),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.red),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.black),
+                        ),
                       ),
                       controller: TextEditingController(text: _selectedDate),
-                      validator: (value) => value == null || value.isEmpty
-                          ? 'Por favor, selecione uma data'
-                          : null,
+                      validator: (value) =>
+                          value == null || value.isEmpty ? 'Selecione uma data' : null,
                     ),
                   ),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _orderController,
-                  decoration: const InputDecoration(labelText: 'Pedido'),
+                  decoration: const InputDecoration(
+                    labelText: 'Pedido',
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 20),
                 TextFormField(
                   controller: _commentController,
-                  decoration: const InputDecoration(labelText: 'Comentário'),
+                  decoration: const InputDecoration(
+                    labelText: 'Comentário',
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.red),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.black),
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 20),
-                _imagePath == null
-                    ? TextButton.icon(
-                        onPressed: _pickImage,
-                        icon: const Icon(Icons.image, color: Colors.red),
-                        label: const Text('Selecionar Imagem'),
-                      )
-                    : Column(
-                        children: [
-                          Image.file(File(_imagePath!), height: 200),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              TextButton.icon(
-                                onPressed: _pickImage,
-                                icon: const Icon(Icons.image, color: Colors.red),
-                                label: const Text('Alterar Imagem'),
-                              ),
-                              TextButton.icon(
-                                onPressed: _removeImage,
-                                icon: const Icon(Icons.delete, color: Colors.red),
-                                label: const Text('Remover Imagem'),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
                 const SizedBox(height: 20),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     ElevatedButton(
                       onPressed: _saveRestaurant,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                      ),
                       child: const Text('Salvar'),
                     ),
                     ElevatedButton(
                       onPressed: _cancel,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey,
+                        foregroundColor: Colors.red,
                       ),
                       child: const Text('Cancelar'),
                     ),

@@ -53,7 +53,16 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastro'),
+        backgroundColor: Colors.red, // Fundo vermelho
+        iconTheme: const IconThemeData(color: Colors.white), // Ícone de voltar branco
+        title: const Text(
+          'Cadastro',
+          style: TextStyle(
+            color: Colors.white, // Texto branco
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        elevation: 2,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -63,19 +72,46 @@ class _RegisterPageState extends State<RegisterPage> {
             TextField(
               controller: _emailController,
               keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(labelText: 'Email'),
+              decoration: const InputDecoration(
+                labelText: 'Email',
+                labelStyle: TextStyle(color: Colors.black), // Texto em preto
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red), // Bordas vermelhas ao focar
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black), // Bordas pretas padrão
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _passwordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: 'Senha'),
+              decoration: const InputDecoration(
+                labelText: 'Senha',
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             TextField(
               controller: _confirmPasswordController,
               obscureText: true,
-              decoration: const InputDecoration(labelText: 'Confirme a Senha'),
+              decoration: const InputDecoration(
+                labelText: 'Confirme a Senha',
+                labelStyle: TextStyle(color: Colors.black),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.red),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.black),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             if (_errorMessage.isNotEmpty)
@@ -88,6 +124,14 @@ class _RegisterPageState extends State<RegisterPage> {
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: _register,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // Botão vermelho
+                      foregroundColor: Colors.white, // Texto branco
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 32,
+                        vertical: 12,
+                      ),
+                    ),
                     child: const Text('Cadastrar'),
                   ),
           ],

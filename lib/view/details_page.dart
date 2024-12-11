@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importação necessária
+import 'package:intl/intl.dart';
 import '../service/firestore_service.dart';
 import 'add_edit_page.dart';
 
@@ -8,6 +10,16 @@ class DetailsPage extends StatelessWidget {
   DetailsPage({required this.restaurant});
 
   final FirestoreService _firestoreService = FirestoreService();
+
+  /// Converte o `Timestamp` para uma string de data legível
+  String _formatDate(dynamic date) {
+    if (date is Timestamp) {
+      return DateFormat('dd/MM/yyyy').format(date.toDate());
+    } else if (date is DateTime) {
+      return DateFormat('dd/MM/yyyy').format(date);
+    }
+    return 'Data inválida'; // Caso não seja um formato válido
+  }
 
   /// Função para excluir restaurante
   void _deleteRestaurant(BuildContext context) async {
@@ -91,54 +103,82 @@ class DetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Detalhes do Restaurante')),
+      appBar: AppBar(
+        backgroundColor: Colors.red, // Fundo vermelho
+        iconTheme: const IconThemeData(color: Colors.white), // Ícones brancos
+        title: const Text(
+          'Detalhes do Restaurante',
+          style: TextStyle(
+            color: Colors.white, // Título em branco
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        elevation: 2, // Sombra padrão para o AppBar
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (restaurant['imagem'] != null && restaurant['imagem'].isNotEmpty)
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Image.network(
-                    restaurant['imagem'],
-                    height: 200,
-                    fit: BoxFit.cover,
-                  ),
-                ),
               const SizedBox(height: 20),
               Text(
-                'Nome: ${restaurant['nome']}',
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                'Nome: ${restaurant['nome'] ?? 'Sem nome'}',
+                style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red, // Nome em vermelho
+                ),
               ),
               const SizedBox(height: 10),
-              const Text('Nota:', style: TextStyle(fontWeight: FontWeight.bold)),
+              const Text(
+                'Nota:',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.red, // Título "Nota" em vermelho
+                ),
+              ),
               _buildRatingStars(restaurant['nota']?.toDouble() ?? 0),
               const SizedBox(height: 10),
-              Text('Tipo de Restaurante: ${restaurant['tipoComida'] ?? "Não especificado"}'),
+              Text(
+                'Tipo de Restaurante: ${restaurant['tipoComida'] ?? "Não especificado"}',
+                style: const TextStyle(color: Colors.black),
+              ),
               const SizedBox(height: 10),
               if (restaurant['pedido'] != null && restaurant['pedido'].isNotEmpty)
-                Text('Pedido: ${restaurant['pedido']}'),
+                Text(
+                  'Pedido: ${restaurant['pedido']}',
+                  style: const TextStyle(color: Colors.black),
+                ),
               const SizedBox(height: 10),
               if (restaurant['dataVisita'] != null)
-                Text('Data de Visita: ${restaurant['dataVisita']}'),
+                Text(
+                  'Data de Visita: ${_formatDate(restaurant['dataVisita'])}', // Formatação correta
+                  style: const TextStyle(color: Colors.black),
+                ),
               const SizedBox(height: 10),
               if (restaurant['comentario'] != null && restaurant['comentario'].isNotEmpty)
-                Text('Comentário: ${restaurant['comentario']}'),
+                Text(
+                  'Comentário: ${restaurant['comentario']}',
+                  style: const TextStyle(color: Colors.black),
+                ),
               const SizedBox(height: 20),
               Row(
                 children: [
                   ElevatedButton(
                     onPressed: () => _editRestaurant(context),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red, // Botão vermelho
+                      foregroundColor: Colors.white, // Texto branco
+                    ),
                     child: const Text('Editar'),
                   ),
                   const SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () => _deleteRestaurant(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red,
-                      foregroundColor: Colors.white,
+                      backgroundColor: Colors.red, // Botão vermelho
+                      foregroundColor: Colors.white, // Texto branco
                     ),
                     child: const Text('Excluir'),
                   ),

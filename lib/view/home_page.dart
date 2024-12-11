@@ -52,30 +52,44 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Image.asset(
+                    'assets/reviews_icon.png', // Ícone personalizado
+                    width: 40,
+                    height: 40,
+                  ),
+                  const SizedBox(width: 10),
+                  const Text(
+                    'Reviews',
+                    style: TextStyle(
+                      fontFamily: 'Pacifico', // Fonte estilizada
+                      fontSize: 24,
+                      color: Colors.red, // Texto vermelho
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              IconButton(
+                icon: const Icon(Icons.logout, color: Colors.red),
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/login');
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 16.0),
-            child: Row(
-              children: [
-                Image.asset(
-                  'assets/reviews_icon.png',
-                  width: 40,
-                  height: 40,
-                ),
-                const SizedBox(width: 10),
-                const Text(
-                  'Reviews',
-                  style: TextStyle(
-                    fontFamily: 'Pacifico',
-                    fontSize: 28,
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ],
-            ),
-          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
@@ -107,20 +121,17 @@ class _HomePageState extends State<HomePage> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                         child: ListTile(
-                          leading: restaurant['imagem'] != null
-                              ? ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Image.network(
-                                    restaurant['imagem'],
-                                    width: 50,
-                                    height: 50,
-                                    fit: BoxFit.cover,
-                                  ),
-                                )
-                              : const Icon(Icons.restaurant, size: 50, color: Colors.red),
+                          leading: const Icon(
+                            Icons.restaurant, // Ícone genérico de restaurante
+                            size: 50,
+                            color: Colors.red,
+                          ),
                           title: Text(
                             restaurant['nome'] ?? 'Sem nome',
-                            style: const TextStyle(fontWeight: FontWeight.bold),
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
                           ),
                           subtitle: _buildRatingStars(restaurant['nota']?.toDouble() ?? 0),
                           onTap: () => _navigateToDetailsPage(restaurant),
@@ -135,7 +146,8 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
+        backgroundColor: Colors.red,
+        child: const Icon(Icons.add, color: Colors.white),
         onPressed: () => _navigateToAddEditPage(),
       ),
     );
