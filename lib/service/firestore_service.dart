@@ -38,14 +38,14 @@ class FirestoreService {
     if (user == null) throw Exception('Usuário não autenticado');
 
     return restaurants
-        .where('uid', isEqualTo: user.uid) // Filtra pelo ID do usuário
+        .where('uid', isEqualTo: user.uid)
         .orderBy('dataVisita', descending: true)
         .snapshots()
         .map((snapshot) => snapshot.docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
               return {
                 ...data,
-                'id': doc.id, // Inclui o ID do documento para futuras operações
+                'id': doc.id,
               };
             }).toList());
   }

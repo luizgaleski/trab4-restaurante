@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Restaurant Reviews',
       theme: ThemeData(primarySwatch: Colors.blue),
-      debugShowCheckedModeBanner: false, // Remove a tag de debug
-      initialRoute: '/login', // Tela inicial definida como LoginPage
+      debugShowCheckedModeBanner: false, 
+      initialRoute: '/login',
       routes: {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),

@@ -37,7 +37,7 @@ class _RegisterPageState extends State<RegisterPage> {
         email: _emailController.text.trim(),
         password: _passwordController.text.trim(),
       );
-      Navigator.pop(context); // Voltar para a página de login
+      Navigator.pop(context); 
     } on FirebaseAuthException catch (e) {
       setState(() {
         _errorMessage = e.message ?? 'Erro desconhecido.';
@@ -53,12 +53,12 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red, // Fundo vermelho
-        iconTheme: const IconThemeData(color: Colors.white), // Ícone de voltar branco
+        backgroundColor: Colors.red, 
+        iconTheme: const IconThemeData(color: Colors.white), 
         title: const Text(
           'Cadastro',
           style: TextStyle(
-            color: Colors.white, // Texto branco
+            color: Colors.white, 
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -74,12 +74,12 @@ class _RegisterPageState extends State<RegisterPage> {
               keyboardType: TextInputType.emailAddress,
               decoration: const InputDecoration(
                 labelText: 'Email',
-                labelStyle: TextStyle(color: Colors.black), // Texto em preto
+                labelStyle: TextStyle(color: Colors.black), 
                 focusedBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.red), // Bordas vermelhas ao focar
+                  borderSide: BorderSide(color: Colors.red),
                 ),
                 enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(color: Colors.black), // Bordas pretas padrão
+                  borderSide: BorderSide(color: Colors.black), 
                 ),
               ),
             ),
@@ -125,8 +125,8 @@ class _RegisterPageState extends State<RegisterPage> {
                 : ElevatedButton(
                     onPressed: _register,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // Botão vermelho
-                      foregroundColor: Colors.white, // Texto branco
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(
                         horizontal: 32,
                         vertical: 12,

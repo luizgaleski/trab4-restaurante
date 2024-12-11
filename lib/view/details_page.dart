@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Importação necessária
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 import '../service/firestore_service.dart';
 import 'add_edit_page.dart';
@@ -18,7 +18,7 @@ class DetailsPage extends StatelessWidget {
     } else if (date is DateTime) {
       return DateFormat('dd/MM/yyyy').format(date);
     }
-    return 'Data inválida'; // Caso não seja um formato válido
+    return 'Data inválida';
   }
 
   /// Função para excluir restaurante
@@ -64,7 +64,7 @@ class DetailsPage extends StatelessWidget {
     if (confirmed ?? false) {
       try {
         await _firestoreService.deleteRestaurant(restaurant['id']);
-        Navigator.pop(context, true); // Retorna à página anterior e sinaliza sucesso
+        Navigator.pop(context, true);
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text('Erro ao excluir restaurante: $e')),
@@ -82,11 +82,11 @@ class DetailsPage extends StatelessWidget {
       ),
     );
     if (updated == true) {
-      Navigator.pop(context, true); // Retorna à página anterior após atualização
+      Navigator.pop(context, true);
     }
   }
 
-  /// Constrói as estrelas de avaliação
+  /// estrelas
   Widget _buildRatingStars(double rating) {
     return Row(
       children: List.generate(
@@ -104,16 +104,16 @@ class DetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red, // Fundo vermelho
-        iconTheme: const IconThemeData(color: Colors.white), // Ícones brancos
+        backgroundColor: Colors.red,
+        iconTheme: const IconThemeData(color: Colors.white),
         title: const Text(
           'Detalhes do Restaurante',
           style: TextStyle(
-            color: Colors.white, // Título em branco
+            color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
         ),
-        elevation: 2, // Sombra padrão para o AppBar
+        elevation: 2,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -127,7 +127,7 @@ class DetailsPage extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  color: Colors.red, // Nome em vermelho
+                  color: Colors.red,
                 ),
               ),
               const SizedBox(height: 10),
@@ -135,7 +135,7 @@ class DetailsPage extends StatelessWidget {
                 'Nota:',
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.red, // Título "Nota" em vermelho
+                  color: Colors.red, 
                 ),
               ),
               _buildRatingStars(restaurant['nota']?.toDouble() ?? 0),
@@ -153,7 +153,7 @@ class DetailsPage extends StatelessWidget {
               const SizedBox(height: 10),
               if (restaurant['dataVisita'] != null)
                 Text(
-                  'Data de Visita: ${_formatDate(restaurant['dataVisita'])}', // Formatação correta
+                  'Data de Visita: ${_formatDate(restaurant['dataVisita'])}', 
                   style: const TextStyle(color: Colors.black),
                 ),
               const SizedBox(height: 10),
@@ -168,8 +168,8 @@ class DetailsPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () => _editRestaurant(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // Botão vermelho
-                      foregroundColor: Colors.white, // Texto branco
+                      backgroundColor: Colors.red, 
+                      foregroundColor: Colors.white, 
                     ),
                     child: const Text('Editar'),
                   ),
@@ -177,8 +177,8 @@ class DetailsPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () => _deleteRestaurant(context),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red, // Botão vermelho
-                      foregroundColor: Colors.white, // Texto branco
+                      backgroundColor: Colors.red, 
+                      foregroundColor: Colors.white,
                     ),
                     child: const Text('Excluir'),
                   ),

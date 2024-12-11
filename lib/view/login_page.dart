@@ -30,7 +30,7 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacementNamed(context, '/home');
     } on FirebaseAuthException catch (_) {
       setState(() {
-        _errorMessage = 'Credenciais incorretas'; // Mensagem genérica
+        _errorMessage = 'Credenciais incorretas'; 
       });
     } finally {
       setState(() {
@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: true, // Permite redimensionar quando o teclado é exibido
+      resizeToAvoidBottomInset: true,
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -52,7 +52,7 @@ class _LoginPageState extends State<LoginPage> {
               Column(
                 children: [
                   Image.asset(
-                    'assets/reviews_icon.png', // Ícone acima das caixas de login
+                    'assets/reviews_icon.png',
                     width: 80,
                     height: 80,
                   ),
@@ -60,16 +60,16 @@ class _LoginPageState extends State<LoginPage> {
                   const Text(
                     'Restaurant Reviews',
                     style: TextStyle(
-                      fontFamily: 'Pacifico', // Fonte estilizada
+                      fontFamily: 'Pacifico',
                       fontSize: 24,
-                      color: Colors.red, // Texto vermelho
+                      color: Colors.red,
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.center,
                   ),
                 ],
               ),
-              const SizedBox(height: 32), // Espaçamento entre o título e os campos
+              const SizedBox(height: 32),
               TextField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
@@ -113,8 +113,8 @@ class _LoginPageState extends State<LoginPage> {
                   : ElevatedButton(
                       onPressed: _login,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red, // Botão vermelho
-                        foregroundColor: Colors.white, // Texto branco
+                        backgroundColor: Colors.red, 
+                        foregroundColor: Colors.white, 
                         padding: const EdgeInsets.symmetric(
                           horizontal: 32,
                           vertical: 12,
@@ -128,7 +128,7 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.pushNamed(context, '/register');
                 },
                 style: TextButton.styleFrom(
-                  foregroundColor: Colors.red, // Texto vermelho
+                  foregroundColor: Colors.red,
                 ),
                 child: const Text('Não tem conta? Cadastre-se'),
               ),

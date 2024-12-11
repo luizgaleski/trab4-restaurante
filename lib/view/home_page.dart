@@ -31,11 +31,10 @@ class _HomePageState extends State<HomePage> {
       ),
     );
     if (updated == true) {
-      setState(() {}); // Atualiza a interface caso tenha alterações
+      setState(() {});
     }
   }
 
-  /// Constrói as estrelas de avaliação
   Widget _buildRatingStars(double rating) {
     return Row(
       children: List.generate(
@@ -62,7 +61,7 @@ class _HomePageState extends State<HomePage> {
               Row(
                 children: [
                   Image.asset(
-                    'assets/reviews_icon.png', // Ícone personalizado
+                    'assets/reviews_icon.png',
                     width: 40,
                     height: 40,
                   ),
@@ -70,9 +69,9 @@ class _HomePageState extends State<HomePage> {
                   const Text(
                     'Reviews',
                     style: TextStyle(
-                      fontFamily: 'Pacifico', // Fonte estilizada
+                      fontFamily: 'Pacifico', 
                       fontSize: 24,
-                      color: Colors.red, // Texto vermelho
+                      color: Colors.red,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -122,7 +121,7 @@ class _HomePageState extends State<HomePage> {
                         ),
                         child: ListTile(
                           leading: const Icon(
-                            Icons.restaurant, // Ícone genérico de restaurante
+                            Icons.restaurant,
                             size: 50,
                             color: Colors.red,
                           ),
